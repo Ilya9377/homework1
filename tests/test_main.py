@@ -1,4 +1,4 @@
-from homework1.main import *
+from src.main import *
 
 
 def fuel_filling():

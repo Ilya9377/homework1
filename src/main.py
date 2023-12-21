@@ -8,11 +8,15 @@ class Category(object):
         Category._unic += 1
         self._count_products = 0
 
-    @property
+    def add(self, product):
+        self._product.append(product)
+
+    def products(self):
+        return self._product
+
     def name(self):
         return self._name
 
-    @property
     def description(self):
         return self._description
 
@@ -27,18 +31,17 @@ class Product(object):
         self._amount = amount
         Product._unic += 1
 
-    @property
+    def my_unic(self):
+        return Product._unic
+
     def name(self):
         return self._name
 
-    @property
     def description(self):
         return self._description
 
-    @property
     def price(self):
         return self._price
 
-    @property
     def amount(self):
         return self._amount

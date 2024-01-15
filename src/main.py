@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class Category(object):
     """Класс Category предназначен для хранения информации о категории товаров.
     Каждый экземпляр класса содержит название категории, описание и список продуктов.
@@ -30,6 +33,17 @@ class Category(object):
             print(f"{product.name}, {product.price} руб. Остаток: {product.amount} шт.")
         return self._product
 
+    def __str__(self):
+        """Возвращает строковое представление объекта"""
+        return f"{self.name}, количество продуктов: {len(self)} шт."
+
+    def __len__(self):
+        """Возвращает общее количество продуктов"""
+        amount = 0
+        for product in self._product:
+            amount += len(product)
+        return amount
+
     @property
     def name(self):
         """Возвращает название категории."""
@@ -60,7 +74,23 @@ class Product(object):
         self._description = description
         self._price = price
         self._amount = amount
+        self.__name__ = "Product"
         Product._unic += 1
+
+    def __add__(self, other: Any):
+        """Определяет поведение операции сложения (+) для продуктов"""
+        if other.__name__ == "Product":
+            return self._price * self._amount + other.price * other.amount
+        else:
+            return "Второй объект не является классом Product"
+
+    def __str__(self):
+        """Возвращает строковое представление объекта Product."""
+        return f"{self.name}, {self.price} руб. Остаток: {self.amount} шт."
+
+    def __len__(self):
+        """Возвращает квантитативное представление объекта Product, используемое функцией len()."""
+        return self.amount
 
     @staticmethod
     def create_product(name: str, description: str, price: float, amount: int):
@@ -105,4 +135,3 @@ class Product(object):
     def amount(self):
         """Возвращает количество единиц продукта на складе."""
         return self._amount
-

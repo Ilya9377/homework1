@@ -105,3 +105,4 @@ class Product(object):
     def amount(self):
         """Возвращает количество единиц продукта на складе."""
         return self._amount
+

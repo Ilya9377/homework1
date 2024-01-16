@@ -25,7 +25,11 @@ class Category(object):
 
     def add(self, product):
         """Добавляет объект product в список продуктов категории."""
-        self._product.append(product)
+        if product.__name__ in ["Smartphone", "Grass", "Product"]:
+            self._product.append(product)
+            return "Товар добавлен"
+        else:
+            return "Объект не является товаром"
 
     def products(self):
         """Выводит информацию о всех продуктах в категории и возвращает список продуктов."""
@@ -79,10 +83,10 @@ class Product(object):
 
     def __add__(self, other: Any):
         """Определяет поведение операции сложения (+) для продуктов"""
-        if other.__name__ == "Product":
+        if other.__name__ == self.__name__:
             return self._price * self._amount + other.price * other.amount
         else:
-            return "Второй объект не является классом Product"
+            return f"Второй объект не является классом {self.__name__}"
 
     def __str__(self):
         """Возвращает строковое представление объекта Product."""
@@ -135,3 +139,83 @@ class Product(object):
     def amount(self):
         """Возвращает количество единиц продукта на складе."""
         return self._amount
+
+
+class Smartphone(Product):
+    def __init__(self, name: str, description: str, price: float,
+                 amount: int, power: int, model: str, storage: int, color: str):
+        """
+                    Инициализация объекта класса Smartphone, который наследуется от Product.
+
+                    :param name: Название смартфона.
+                    :param description: Описание смартфона.
+                    :param price: Цена смартфона.
+                    :param amount: Количество смартфонов на складе.
+                    :param power: Производительность.
+                    :param model: Модель смартфона.
+                    :param storage: Объем встроенной памяти смартфона.
+                    :param color: Цвет смартфона.
+                    """
+        super().__init__(name, description, price, amount)
+        self._power = power
+        self._model = model
+        self._storage = storage
+        self._color = color
+        self.__name__ = "Smartphone"
+
+
+    @property
+    def power(self):
+        """Возвращает производиттельность смартфона."""
+        return self._power
+
+    @property
+    def model(self):
+        """Возвращает модель смартфона."""
+        return self._model
+
+    @property
+    def storage(self):
+        """Возвращает объем встроенной памяти смартфона."""
+        return self._storage
+
+    @property
+    def color(self):
+        """Возвращает цвет смартфона."""
+        return self._color
+
+
+class Grass(Product):
+    def __init__(self, name: str, description: str, price: float, amount: int, country: str,
+                 term_rise: int, color: str):
+        """
+               Инициализация объекта класса Grass, который наследуется от Product.
+
+               :param name: Название травы.
+               :param description: Описание травы.
+               :param price: Цена травы.
+               :param amount: Количество травы на складе.
+               :param country: Страна происхождения.
+               :param term_rise: Срок выращивания травы до урожая.
+               :param color: Цвет травы.
+               """
+        super().__init__(name, description, price, amount)
+        self._country = country
+        self._term_rise = term_rise
+        self._color = color
+        self.__name__ = "Grass"
+
+    @property
+    def color(self):
+        """Возвращает цвет травы."""
+        return self._color
+
+    @property
+    def country(self):
+        """Возвращает страну происхождения травы."""
+        return self._country
+
+    @property
+    def term_rise(self):
+        """Возвращает срок выращивания травы до урожая."""
+        return self._term_rise

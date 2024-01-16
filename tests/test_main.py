@@ -1,6 +1,6 @@
 import pytest
 
-from src.main import Product, Category
+from src.main import Product, Category, Smartphone, Grass
 
 
 @pytest.fixture
@@ -135,4 +135,88 @@ def test_category_len():
     categ.add(prod_2)
     true_output = product_amount * 2
     real_output = len(categ)
+    assert true_output == real_output
+
+
+@pytest.fixture
+def check_product_smartphone():
+    """
+        Фикстура pytest для создания тестовых данных для смартфона.
+
+        :return: Список значений, соответствующих параметрам инициализации экземпляра класса Smartphone.
+        """
+    return ["Nokia 3310", "smartphone", 10, 10, 11000, "3310", 32, "black"]
+
+
+@pytest.fixture
+def check_product_grass():
+    """
+        Фикстура pytest для создания тестовых данных для травы.
+
+        :return: Список значений, соответствующих параметрам инициализации экземпляра класса Grass.
+        """
+    return ["green", "", 10, 10, "russia", 20, "green"]
+
+
+def test_smartphone_init(check_product_smartphone):
+    """
+       Тест инициализации экземпляра класса Smartphone.
+
+       Использует фикстуру check_product_smartphone для проверки корректности создания экземпляра.
+
+       Проверяет, что атрибуты экземпляра совпадают с данными, предоставленными фикстурой.
+       """
+    product_data = check_product_smartphone
+    prod = Smartphone(*product_data)
+    assert prod.name == product_data[0]
+    assert prod.description == product_data[1]
+    assert prod.price == product_data[2]
+    assert prod.amount == product_data[3]
+    assert prod.power == product_data[4]
+    assert prod.model == product_data[5]
+    assert prod.storage == product_data[6]
+    assert prod.color == product_data[7]
+
+
+def test_grass_init(check_product_grass):
+    """
+        Тест инициализации экземпляра класса Grass.
+
+        Использует фикстуру check_product_grass для проверки корректности создания экземпляра.
+
+        Проверяет, что атрибуты экземпляра совпадают с данными, предоставленными фикстурой.
+        """
+    product_data = check_product_grass
+    prod = Grass(*product_data)
+    assert prod.name == product_data[0]
+    assert prod.description == product_data[1]
+    assert prod.price == product_data[2]
+    assert prod.amount == product_data[3]
+    assert prod.country == product_data[4]
+    assert prod.term_rise == product_data[5]
+    assert prod.color == product_data[6]
+
+
+def test_add_product():
+    """
+        Тест добавления продукта в категорию.
+
+        Создает экземпляр категории и экземпляр продукта (смартфон), затем проверяет,
+        что продукт успешно добавляется в категорию и метод возвращает ожидаемое сообщение.
+        """
+    category_name = "gadget"
+    category_description = ""
+    product_name = "apple"
+    product_description = "smartphone"
+    product_price = 100
+    product_amount = 20
+    product_power = 100
+    product_model = "11"
+    product_storage = 128
+    product_color = "black"
+    categ = Category(category_name, category_description)
+    prod = Smartphone(product_name, product_description, product_price, product_amount,
+                      product_power, product_model, product_storage, product_color)
+    real_output = categ.add(prod)
+    true_output = "Товар добавлен"
     assert true_output == real_output

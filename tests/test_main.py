@@ -220,3 +220,30 @@ def test_add_product():
     real_output = categ.add(prod)
     true_output = "Товар добавлен"
     assert true_output == real_output
+
+
+def test_repr_grass(check_product_grass):
+    """Проверяет правильность реализации метода repr для класса Grass."""
+    product_data = check_product_grass
+    prod = Grass(*product_data)
+    true_output = "Grass, green, 10 руб. Остаток: 10 шт., russia, 20, green"
+    real_output = repr(prod)
+    assert true_output == real_output
+
+
+def test_repr_smartphone(check_product_smartphone):
+    """Проверяет правильность реализации метода repr для класса Smartphone."""
+    product_data = check_product_smartphone
+    prod = Smartphone(*product_data)
+    true_output = "Smartphone, Nokia 3310, 10 руб. Остаток: 10 шт., 11000, 3310, 32, black"
+    real_output = repr(prod)
+    assert true_output == real_output
+
+
+def test_repr_product(check_product_data):
+    """Проверяет правильность реализации метода repr для класса Product"""
+    product_data = check_product_data
+    prod = Product(*product_data)
+    true_output = "Product, appel, 100 руб. Остаток: 20 шт."
+    real_output = repr(prod)
+    assert true_output == real_output

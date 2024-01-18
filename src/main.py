@@ -1,4 +1,5 @@
 from typing import Any
+from abc import ABC, abstractmethod
 
 
 class Category(object):
@@ -58,28 +59,17 @@ class Category(object):
         """Возвращает описание категории."""
         return self._description
 
+    def __repr__(self):
+        return f"{self.__name__}, {str(self)}, Описание: {self.description}"
 
-class Product(object):
-    """
-    Класс Product предназначен для создания и хранения данных о товаре.
 
-    Атрибуты:
-        _name (str): Название продукта.
-        _description (str): Описание продукта.
-        _price (float): Цена продукта.
-        _amount (int): Количество единиц продукта.
-        _unic (int): Классовая переменная, отслеживающая количество созданных экземпляров.
-        """
-    _unic = 0
-
+class AbstractProduct(ABC):
     def __init__(self, name: str, description: str, price: float, amount: int):
         """Инициализирует экземпляр продукта с заданными характеристиками."""
         self._name = name
         self._description = description
         self._price = price
         self._amount = amount
-        self.__name__ = "Product"
-        Product._unic += 1
 
     def __add__(self, other: Any):
         """Определяет поведение операции сложения (+) для продуктов"""
@@ -87,19 +77,6 @@ class Product(object):
             return self._price * self._amount + other.price * other.amount
         else:
             return f"Второй объект не является классом {self.__name__}"
-
-    def __str__(self):
-        """Возвращает строковое представление объекта Product."""
-        return f"{self.name}, {self.price} руб. Остаток: {self.amount} шт."
-
-    def __len__(self):
-        """Возвращает квантитативное представление объекта Product, используемое функцией len()."""
-        return self.amount
-
-    @staticmethod
-    def create_product(name: str, description: str, price: float, amount: int):
-        """Создает и возвращает экземпляр класса Product."""
-        return Product(name, description, price, amount)
 
     @property
     def price(self):
@@ -140,8 +117,48 @@ class Product(object):
         """Возвращает количество единиц продукта на складе."""
         return self._amount
 
+    def __str__(self):
+        """Возвращает строковое представление объекта Product."""
+        return f"{self.name}, {self.price} руб. Остаток: {self.amount} шт."
 
-class Smartphone(Product):
+    def __len__(self):
+        """Возвращает квантитативное представление объекта Product, используемое функцией len()."""
+        return self.amount
+
+    @abstractmethod
+    def __repr__(self):
+        pass
+
+
+class Product(AbstractProduct):
+    """
+    Класс Product предназначен для создания и хранения данных о товаре.
+
+    Атрибуты:
+        _name (str): Название продукта.
+        _description (str): Описание продукта.
+        _price (float): Цена продукта.
+        _amount (int): Количество единиц продукта.
+        _unic (int): Классовая переменная, отслеживающая количество созданных экземпляров.
+        """
+    _unic = 0
+
+    def __init__(self, name: str, description: str, price: float, amount: int):
+        """Инициализирует экземпляр продукта с заданными характеристиками."""
+        super().__init__(name, description, price, amount)
+        self.__name__ = "Product"
+        Product._unic += 1
+
+    @staticmethod
+    def create_product(name: str, description: str, price: float, amount: int):
+        """Создает и возвращает экземпляр класса Product."""
+        return Product(name, description, price, amount)
+
+    def __repr__(self):
+        return f"{self.__name__}, {str(self)}"
+
+
+class Smartphone(AbstractProduct):
     def __init__(self, name: str, description: str, price: float,
                  amount: int, power: int, model: str, storage: int, color: str):
         """
@@ -163,7 +180,6 @@ class Smartphone(Product):
         self._color = color
         self.__name__ = "Smartphone"
 
-
     @property
     def power(self):
         """Возвращает производиттельность смартфона."""
@@ -184,8 +200,12 @@ class Smartphone(Product):
         """Возвращает цвет смартфона."""
         return self._color
 
+    def __repr__(self):
+        return (f"{self.__name__}, {str(self)}, {self.power}, {self.model},"
+                f" {self.storage}, {self.color}")
 
-class Grass(Product):
+
+class Grass(AbstractProduct):
     def __init__(self, name: str, description: str, price: float, amount: int, country: str,
                  term_rise: int, color: str):
         """
@@ -219,3 +239,11 @@ class Grass(Product):
     def term_rise(self):
         """Возвращает срок выращивания травы до урожая."""
         return self._term_rise
+
+    def __repr__(self):
+        return (f"{self.__name__}, {str(self)}, {self.country}, {self.term_rise},"
+                f" {self.color}")
+
+
+s = Grass("трава", "", 10, 10, "usa", 2, "green")
+print(repr(s))

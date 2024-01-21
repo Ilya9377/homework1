@@ -27,7 +27,16 @@ class Category(object):
     def add(self, product):
         """Добавляет объект product в список продуктов категории."""
         if product.__name__ in ["Smartphone", "Grass", "Product"]:
-            self._product.append(product)
+            try:
+                if product.amount == 0:
+                    raise ValueError("Количество не может равняться нулю")
+                else:
+                    self._product.append(product)
+            except ValueError as e:
+                try:
+                    print(f"Сработало исключение: {e}")
+                finally:
+                    exit(1)
             return "Товар добавлен"
         else:
             return "Объект не является товаром"
@@ -62,6 +71,23 @@ class Category(object):
     def __repr__(self):
         return f"{self.__name__}, {str(self)}, Описание: {self.description}"
 
+    def mean_price(self):
+        """
+            Вычисляет среднюю цену продуктов в корзине.
+
+            :return: Средняя цена продуктов в корзине.
+            :rtype: float
+
+            :raises ZeroDivisionError: Если корзина пуста (нулевая длина), возвращает 0.
+            """
+        sum_price = 0
+        for product in self._product:
+            sum_price += product.price * product.amount
+        try:
+            return sum_price / len(self)
+        except ZeroDivisionError:
+            return 0
+
 
 class AbstractProduct(ABC):
     def __init__(self, name: str, description: str, price: float, amount: int):
@@ -70,6 +96,14 @@ class AbstractProduct(ABC):
         self._description = description
         self._price = price
         self._amount = amount
+        # try:
+        #     if amount == 0:
+        #         raise ValueError("Количество не может равняться нулю")
+        #     else:
+        #         self._amount = amount
+        # except ValueError as e:
+        #     print(f"Сработало исключение: {e}")
+        #     exit(1)
 
     def __add__(self, other: Any):
         """Определяет поведение операции сложения (+) для продуктов"""
@@ -158,7 +192,7 @@ class Product(AbstractProduct):
         return f"{self.__name__}, {str(self)}"
 
 
-class Smartphone(AbstractProduct):
+class Smartphone(Product):
     def __init__(self, name: str, description: str, price: float,
                  amount: int, power: int, model: str, storage: int, color: str):
         """
@@ -205,7 +239,7 @@ class Smartphone(AbstractProduct):
                 f" {self.storage}, {self.color}")
 
 
-class Grass(AbstractProduct):
+class Grass(Product):
     def __init__(self, name: str, description: str, price: float, amount: int, country: str,
                  term_rise: int, color: str):
         """
@@ -245,5 +279,10 @@ class Grass(AbstractProduct):
                 f" {self.color}")
 
 
-s = Grass("трава", "", 10, 10, "usa", 2, "green")
-print(repr(s))
+# # s = Grass("трава", "", 10, 0, "usa", 2, "green")
+# # print(repr(s))
+# s = Category("iphone", "")
+# u = Grass("трава", "", 10, 0, "usa", 2, "green")
+# print(u)
+# print(s.add(u))
+# print(s.mean_price())

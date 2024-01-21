@@ -247,3 +247,33 @@ def test_repr_product(check_product_data):
     true_output = "Product, appel, 100 руб. Остаток: 20 шт."
     real_output = repr(prod)
     assert true_output == real_output
+
+
+def test_category_mean_price(check_product_smartphone):
+    """
+        Тестирование метода mean_price() класса Category для непустой категории.
+        """
+    category_name = "fruits"
+    category_description = "sweet and sour"
+    # Инициализация категории
+    categ = Category(category_name, category_description)
+    # Создание и добавление продукта в категорию
+    prod = Smartphone(*check_product_smartphone)
+    categ.add(prod)
+    true_output = 10.0
+    real_output = categ.mean_price()
+    assert true_output == real_output
+
+
+def test_category_mean_price_empty(check_product_smartphone):
+    """
+       Тестирование метода mean_price() класса Category для пустой категории.
+        """
+    category_name = "fruits"
+    category_description = "sweet and sour"
+    # Инициализация категории
+    categ = Category(category_name, category_description)
+    # Создание и добавление продукта в категорию
+    true_output = 0
+    real_output = categ.mean_price()
+    assert true_output == real_output

@@ -27,16 +27,16 @@ class Category(object):
     def add(self, product):
         """Добавляет объект product в список продуктов категории."""
         if product.__name__ in ["Smartphone", "Grass", "Product"]:
-            try:
-                if product.amount == 0:
-                    raise ValueError("Количество не может равняться нулю")
-                else:
-                    self._product.append(product)
-            except ValueError as e:
-                try:
-                    print(f"Сработало исключение: {e}")
-                finally:
-                    exit(1)
+            # try:
+            if product.amount == 0:
+                raise ValueError("Количество не может равняться нулю")
+            else:
+                self._product.append(product)
+            # except ValueError as e:
+            #     try:
+            #         print(f"Сработало исключение: {e}")
+            #     finally:
+            #         exit(1)
             return "Товар добавлен"
         else:
             return "Объект не является товаром"
@@ -279,10 +279,10 @@ class Grass(Product):
                 f" {self.color}")
 
 
-# # s = Grass("трава", "", 10, 0, "usa", 2, "green")
-# # print(repr(s))
-# s = Category("iphone", "")
-# u = Grass("трава", "", 10, 0, "usa", 2, "green")
-# print(u)
-# print(s.add(u))
-# print(s.mean_price())
+s = Grass("трава", "", 10, 0, "usa", 2, "green")
+print(repr(s))
+s = Category("iphone", "")
+u = Grass("трава", "", 10, 0, "usa", 2, "green")
+print(u)
+print(s.add(u))
+print(s.mean_price())
